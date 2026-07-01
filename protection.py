@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+from record_log import log_info, log_error
 
 
 spam_users = {}
@@ -7,20 +7,31 @@ spam_users = {}
 
 
 def check_user(ID):
-    if ID in spam_users:
-        if datetime.now() < spam_users[ID]:
-            print('прошло мало вермени')
-            return True
+    try:
+        log_info(f'check_user {ID}')
+
+        if ID in spam_users:
+            if datetime.now() < spam_users[ID]:
+                return True
 
 
-        else:
-            if ID in spam_users:
-                del spam_users[ID]
-            print('время защиты вышло так уж и быть')
-            return False
+            else:
+                if ID in spam_users:
+                    del spam_users[ID]
 
+
+                return False
+
+
+    except Exception as e:
+        log_error(f'произошла ошибка в check_user: {e}')
 
 
 def temporarily_stop(ID):
-    spam_users[ID] = datetime.now() + timedelta(seconds=10)
-    print('хахаха добавляем в черный список')
+    try:
+        log_info(f'temporarily_stop добавляем {ID}')
+        spam_users[ID] = datetime.now() + timedelta(seconds=10)
+
+
+    except Exception as e:
+        log_error(f'произошла ошибка в temporarily_stop: {e}')

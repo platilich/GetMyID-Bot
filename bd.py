@@ -1,14 +1,11 @@
 import sqlite3
 
 from record_log import log_info, log_error
-from datetime import datetime, timedelta, timezone
-
-DB_FILE = 'Users.db'
+from datetime import datetime
 
 
 
-def get_current_time():
-    return datetime.now().astimezone()
+db_file = 'Users.db'
 
 
 
@@ -16,7 +13,7 @@ def initialize_database():
     try:
         log_info('Initializing database')
 
-        con = sqlite3.connect('Users.db')
+        con = sqlite3.connect(db_file)
         cursor = con.cursor()
 
 
@@ -46,7 +43,7 @@ def add_or_update_user(ID, name, username):
         log_info(f'Updating/adding user {ID}')
 
 
-        con = sqlite3.connect('Users.db')
+        con = sqlite3.connect(db_file)
         cursor = con.cursor()
 
 
@@ -58,12 +55,13 @@ def add_or_update_user(ID, name, username):
         user = cursor.fetchone()
 
 
-        if user is None: # если пользователя нет
+        if user is None:
             cursor.execute('''INSERT INTO Users (ID, name, username, count_message, registrate, last_message) VALUES (?, ?, ?, ?, ?, ?) ''', (ID, name, username, 0, now, now))
 
 
-        else: # если пользователь есть обновляем информацию
+        else:
             cursor.execute('''UPDATE Users SET name = ?, username = ?, last_message = ? WHERE ID = ? ''', (name, username, now, ID))
+            cursor.execute('UPDATE Users SET count_message = count_message + 1 WHERE ID = ?', (ID,))
 
 
         con.commit()
@@ -75,26 +73,4 @@ def add_or_update_user(ID, name, username):
 
 
     except Exception as e:
-        log_error(f'Error adding/updating user {ID}: {e}')
-        print(e)
-
-
-
-
-def update_count_message(ID):
-    con = sqlite3.connect('Users.db')
-    cursor = con.cursor()
-
-
-    cursor.execute('UPDATE Users SET count_message = count_message + 1 WHERE ID = ?', (ID, ))
-
-
-    con.commit()
-    con.close()
-
-
-
-
-
-
-initialize_database()
+        log_error(f'Error adding/updating user {ID}\n\n{e}')
