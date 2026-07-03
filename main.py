@@ -58,7 +58,7 @@ async def index(message: types.Message):
                 f"🔒 Spam protection is enabled!\n"
                 f"I respond once every 1 minutes to avoid abuse.\n\n"
                 f"💻 The bot is open source!\n"
-                f"You can view and contribute to the code on GitHub [here](https://github.com/platilich/GetMyID-Bot)\n\n"
+                f"You can view and contribute to the code on GitHub [here](https://github.com/paulilich/GetMyID-Bot)\n\n"
                 f"😊 Thanks for understanding!"
             ),
             parse_mode='Markdown',
