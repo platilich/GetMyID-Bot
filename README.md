@@ -20,5 +20,5 @@ A simple Telegram bot that responds with your unique user ID upon starting the b
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/paulilich/GetMyID-Bot.git
+   git clone https://github.com/platilich/GetMyID-Bot.git
    cd GetMyID-Bot
